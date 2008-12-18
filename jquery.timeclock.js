@@ -20,7 +20,7 @@ function TimeClock() {
 		// H: hours, M: minutes, S: seconds.
 		format: 'HM',
 		// Interval in miniseconds between updating this timeclock.
-		tick: 490,
+		tick: 480,
 	}
 	// Hmm, what does this do?
 	$.extend(this._defaults);
@@ -121,21 +121,21 @@ $.extend(TimeClock.prototype, {
      */
     _calculateTime: function(inst) {
         var now = new Date();
-        var usecs = now - inst._since;
+        var msecs = now - inst._since;
         var time = {
             hours: 0,
             minutes: 0,
             seconds: 0,
-            useconds: 0
+            mseconds: 0
         }
-        var reduceTime = function(name, numuSecs) {
-            time[name] = Math.floor(usecs / numuSecs);
-            usecs -= time[name] * numuSecs;
+        var reduceTime = function(name, nummSecs) {
+            time[name] = Math.floor(msecs / nummSecs);
+            msecs -= time[name] * nummSecs;
         };
         reduceTime('hours', 3600000);
         reduceTime('minutes', 60000);
         reduceTime('seconds', 1000);
-        reduceTime('useconds', 1);
+        reduceTime('mseconds', 1);
         return time;
     }
 
