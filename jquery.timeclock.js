@@ -50,6 +50,7 @@ $.extend(TimeClock.prototype, {
         }
         var inst = {};
         inst.options = $.extend({}, options);
+        inst._origHTML = target.html();
         this._adjustSettings(inst);
         $.data(target[0], PROP_NAME, inst);
         this._updateTimeClock(target, inst);
@@ -71,6 +72,25 @@ $.extend(TimeClock.prototype, {
         var format = this._get(inst, 'format');
         inst._timer = setTimeout('$.timeclock._updateTimeClock("#' + target[0].id + '")', this._get(inst, 'tick'));
         $.data(target[0], PROP_NAME, inst);
+    },
+
+    /**
+     * Stop and remove the timeclock
+     * @param target element - the containing div-tag
+     * @return object calculated time as per the _calculateTime method.
+     */
+    _destroyTimeClock: function(target) {
+        target = $(target);
+        if (!target.hasClass(this.markerClassName)) {
+            return;
+        }
+        var inst = $.data(target[0], PROP_NAME);
+        if (inst._timer) {
+            clearTimeout(inst._timer);
+        }
+        target.removeClass(this.markerClassName).html(inst._origHTML);
+        $.removeData(target[0], PROP_NAME);
+        return this._calculateTime(inst);
     },
 
     /**
