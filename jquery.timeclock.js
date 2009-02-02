@@ -52,7 +52,6 @@ $.extend(TimeClock.prototype, {
 		inst.options = $.extend({}, options);
 		inst._origHTML = target.html();
 		this._adjustSettings(inst);
-		console.log(inst);
 		$.data(target[0], PROP_NAME, inst);
 		this._updateTimeClock(target, inst);
 	},
